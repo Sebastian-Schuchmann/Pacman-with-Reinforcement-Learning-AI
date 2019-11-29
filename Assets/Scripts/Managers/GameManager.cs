@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour {
     static public int score;
 
 	public float scareLength;
-	private float _timeToCalm;
+	public float _timeToCalm;
 
     public float SpeedPerLevel;
     
@@ -105,16 +105,26 @@ public class GameManager : MonoBehaviour {
         livesUI.SetLives(lives);
 
         pacdots = GameObject.FindGameObjectsWithTag("deadpacdot");
-        foreach (var p in pacdots)
+        foreach (var p in pacdots){
+            if(p.GetComponent<Pacdot>() != null)
             p.GetComponent<Pacdot>().enable();
+            if(p.GetComponent<Energizer>() != null)
+            p.GetComponent<Energizer>().enable();
+        }
 
-        // Adjust Ghost variables!
-        clyde.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
-        blinky.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
-        pinky.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
-        inky.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
-        pacman.GetComponent<PlayerController>().speed += Level*SpeedPerLevel/2;
+               CalmGhosts();
 
+		pacman.transform.position = new Vector3(15f, 11f, 0f);
+		blinky.transform.position = new Vector3(15f, 20f, 0f);
+		pinky.transform.position = new Vector3(14.5f, 17f, 0f);
+		inky.transform.position = new Vector3(16.5f, 17f, 0f);
+		clyde.transform.position = new Vector3(12.5f, 17f, 0f);
+
+		pacman.GetComponent<PlayerController>().ResetDestination();
+		blinky.GetComponent<GhostMove>().InitializeGhost();
+		pinky.GetComponent<GhostMove>().InitializeGhost();
+		inky.GetComponent<GhostMove>().InitializeGhost();
+		clyde.GetComponent<GhostMove>().InitializeGhost();
 
         GameObject.Find("Agent").GetComponent<PacmanAgent>().Done();
         GameObject.Find("Agent").GetComponent<PacmanAgent>().AgentReset();

@@ -6,17 +6,27 @@ public class PacmanAgent: Agent
     public PlayerController pc;
     public GameManager gm;
 
+    public GhostMove ghost0;
+    public GhostMove ghost1;
+    public GhostMove ghost2;
+    public GhostMove ghost3;
+
 
 
     public override void CollectObservations()
     {
-        SetReward((float)GameManager.score / 10000f);
+        SetReward((float)GameManager.score / 1000000f);
+
+        AddVectorObs(ghost0.direction);
+        AddVectorObs(ghost1.direction);
+        AddVectorObs(ghost2.direction);
+        AddVectorObs(ghost3.direction);
+
+        AddVectorObs(gm._timeToCalm);
     }
 
     public override void AgentAction(float[] vectorAction, string textAction)
     {
-        Debug.Log(vectorAction[0]);
-        Debug.Log(vectorAction.Length);
 
         switch (vectorAction[0])
         {

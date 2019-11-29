@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Energizer : MonoBehaviour {
 
+    public bool active = true;
+
     private GameManager gm;
 
 	// Use this for initialization
@@ -14,10 +16,57 @@ public class Energizer : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
+//        Debug.Log("Trigger");
+          if (!active)
+            return;
+   
+          
+
         if(col.name == "pacman")
         {
+                //    Debug.Log("Trigger PAC");
+
+                     
+                    gameObject.tag = "deadpacdot";
+            active = false;
+            GetComponent<SpriteRenderer>().enabled = false;
+
+
             gm.ScareGhosts();
-            Destroy(gameObject);
+
+
         }
+    }
+
+
+    void OnTriggerStay2D(Collider2D col)
+    {
+        Debug.Log("Trigger");
+          if (!active)
+            return;
+   
+          
+
+        if(col.name == "pacman")
+        {
+                    Debug.Log("Trigger PAC");
+
+                     
+                    gameObject.tag = "deadpacdot";
+            active = false;
+            GetComponent<SpriteRenderer>().enabled = false;
+
+
+            gm.ScareGhosts();
+
+
+        }
+    }
+
+        public void enable()
+    {
+        active = true;
+        GetComponent<SpriteRenderer>().enabled = true;
+        gameObject.tag = "pacdot";
     }
 }
